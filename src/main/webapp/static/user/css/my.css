@@ -1,0 +1,27 @@
+.shopping-summery.list{
+    table-layout: fixed;
+    margin: 0 auto;
+    text-align: center;
+}
+.shopping-summery.list p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.my_content {
+    font-size: 14px;
+    height: 50px;
+    width: 100px;
+    text-align: center;
+    color: #fff;
+    background: #333333;
+    position: absolute;
+    right: 0;
+    top: -9px;
+    border: none;
+}
+
+.card-small {
+    box-shadow: 0 2px 0 rgba(90,97,105,.11), 0 4px 8px rgba(90,97,105,.12), 0 10px 10px rgba(90,97,105,.06), 0 7px 70px rgba(90,97,105,.1);
+}
