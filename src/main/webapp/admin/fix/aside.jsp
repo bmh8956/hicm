@@ -1,9 +1,12 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%--<jsp:include page="login_before.jsp"></jsp:include>--%>
 <aside class="main-sidebar col-12 col-md-3 col-lg-2 px-0">
     <div class="main-navbar">
         <nav class="navbar align-items-stretch navbar-light bg-white flex-md-nowrap border-bottom p-0">
             <a class="navbar-brand w-100 mr-0" href="#" style="line-height: 25px;">
                 <div class="d-table m-auto">
-                    <img id="main-logo" class="d-inline-block align-top mr-1" style="max-width: 25px;" src="static/images/shards-dashboards-logo.svg" alt="Shards Dashboard">
+                    <img id="main-logo" class="d-inline-block align-top mr-1" style="max-width: 25px;"
+                         src="static/images/shards-dashboards-logo.svg" alt="Shards Dashboard">
                     <span class="d-none d-md-inline ml-1">Shards Dashboard</span>
                 </div>
             </a>
@@ -93,15 +96,15 @@
     let path = location.pathname
     path = path.split("/")[path.split("/").length - 1].replace(".jsp", "");
     let li = document.querySelectorAll('li');
-    for(let l of li) {
-        if(l.id == path) {
+    for (let l of li) {
+        if (l.id == path) {
             l.classList.add('active')
             l.children[0].classList.add('active')
         }
     }
-    if(path != 'index') {
-        for(let l of li) {
-            if(l.classList.contains('dev')) {
+    if (path != 'index') {
+        for (let l of li) {
+            if (l.classList.contains('dev')) {
                 l.style.display = 'none'
             }
         }

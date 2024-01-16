@@ -1,8 +1,5 @@
 <%@ page import="member.MemberDTO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%
-    MemberDTO admin = (MemberDTO) session.getAttribute("admin");
-%>
 <!doctype html>
 <html class="no-js h-100" lang="en">
 <head>
@@ -118,9 +115,5 @@
 <script src="static/scripts/extras.1.1.0.min.js"></script>
 <script src="static/scripts/shards-dashboards.1.1.0.min.js"></script>
 <script src="static/scripts/app/app-blog-overview.1.1.0.js"></script>
-<script !src="">
-    let id = '<%=admin.getMb_id()%>'
-    console.log(id)
-</script>
 </body>
 </html>
