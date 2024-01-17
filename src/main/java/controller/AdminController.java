@@ -33,13 +33,24 @@ public class AdminController extends HttpServlet {
 		System.out.println(path);
 		HttpSession session = req.getSession();
 
-		if (session.getAttribute("admin") == null && !path.equals("/loginForm.adm")) {
+		if (session.getAttribute("admin") == null && !path.equals("/loginForm.adm") && !path.equals("/joinForm.adm")) {
 			String msg = URLEncoder.encode("로그인이 필요한 페이지입니다.", "UTF-8");
-			String url = URLEncoder.encode("/hicommunity/admin/loginForm.jsp", "UTF-8");
+			String url = URLEncoder.encode("/hicommunity/loginForm.adm", "UTF-8");
 			res.sendRedirect(def + "fix/alert.jsp?msg=" + msg + "&url=" + url);
+		} else if(path.equals("/joinForm.adm")) {
+			int cnt = MemberDAO.adminCnt();
+			if(!(cnt == 0)) {
+//				res.sendRedirect(def + "fix/alert.jsp");
+				req.getRequestDispatcher("/admin/fix/alert.jsp").forward(req, res);
+			} else {
+				req.getRequestDispatcher("/admin/joinForm.jsp").forward(req, res);
+			}
 		} else if (path.equals("/loginForm.adm")) {
 			System.out.println(path + " succ");
-			res.sendRedirect(def + "loginForm.jsp");
+			int cnt = MemberDAO.adminCnt();
+			req.setAttribute("cnt", cnt);
+			req.getRequestDispatcher("/admin/loginForm.jsp").forward(req, res);
+//			res.sendRedirect(def + "loginForm.jsp");
 		} else if (path.equals("/index.adm")) {
 			res.sendRedirect(def + "index.jsp");
 		} else if (path.equals("/main.adm")) {

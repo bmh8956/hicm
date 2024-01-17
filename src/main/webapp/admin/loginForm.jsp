@@ -30,6 +30,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: grid;
         }
 
         form {
@@ -73,6 +74,15 @@
 
         <button type="submit" id="btn">login</button>
     </form>
+<%--    <%=request.getAttribute("cnt")%>--%>
+    <%
+        int cnt = (int) request.getAttribute("cnt");
+        if(cnt == 0) {
+    %>
+        <button type="button" onclick="location.href='/hicommunity/joinForm.adm'">회원가입</button>
+    <%
+        }
+    %>
 </div>
 <%--<form id="frm">--%>
 <%--id : <input type="text" name="id"><br>--%>
@@ -111,7 +121,6 @@
                 }
             }
         });
-
     }
 
     window.onload = () => {

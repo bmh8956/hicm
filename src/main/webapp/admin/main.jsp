@@ -1,5 +1,9 @@
 <%@ page import="member.MemberDTO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    MemberDTO dto = (MemberDTO) session.getAttribute("admin");
+
+%>
 <!doctype html>
 <html class="no-js h-100" lang="en">
 <head>
@@ -34,6 +38,17 @@
                     <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
                         <span class="text-uppercase page-subtitle">main</span>
                         <h3 class="page-title">관리자 인증 게시물</h3>
+                        <%
+                            if (dto == null) {
+                        %>
+                        로그인
+                        <%
+                        } else {
+                        %>
+                        로그아웃
+                        <%
+                            }
+                        %>
                     </div>
                 </div>
                 <!-- End Page Header -->

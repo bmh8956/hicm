@@ -6,6 +6,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    session.invalidate();
+%>
 <script>
     window.onload = () => {
         let msg = new URL(location.href).searchParams.get('msg')
@@ -16,7 +19,7 @@
         }
         alert(msg);
         if(url == 'null' || url == null) {
-            url = "http://localhost:8181/hicommunity/admin/loginForm.jsp";
+            url = "/hicommunity/loginForm.adm";
         }
         document.location = url;
     }
