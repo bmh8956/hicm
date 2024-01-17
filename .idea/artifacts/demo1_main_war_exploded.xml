@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="demo1.main:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/demo1_main_war_exploded</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="demo1.main" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Gradle: org.projectlombok:lombok:1.18.28" />
+          <element id="library" level="project" name="Gradle: org.json:json:20160810" />
+          <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.13.0" />
+          <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.13.0" />
+          <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.13.0" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="demo1.main/web/Web Gradle : demo1-1.0-SNAPSHOT.war" />
+    </root>
+  </artifact>
+</component>
