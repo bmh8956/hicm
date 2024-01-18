@@ -1,3 +1,5 @@
+<%@ page import="member.MemberDTO" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html class="no-js h-100" lang="en">
@@ -32,7 +34,7 @@
                 <div class="page-header row no-gutters py-4">
                     <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
                         <span class="text-uppercase page-subtitle">main</span>
-                        <h3 class="page-title">관리자 인증 게시물</h3>
+                        <h3 class="page-title">관리자 계정</h3>
                     </div>
                 </div>
                 <!-- End Page Header -->
@@ -40,56 +42,56 @@
                 <div class="row">
                     <div class="col">
                         <div class="card card-small overflow-hidden mb-4">
-                            <div class="card-header bg-dark">
-                                <h6 class="m-0 text-white">카테고리1</h6>
-                            </div>
                             <div class="card-body p-0 pb-3 bg-dark text-center">
                                 <table class="table table-dark mb-0 list">
                                     <thead class="thead-dark">
                                     <tr>
                                         <th scope="col" class="border-bottom-0">번호</th>
-                                        <th scope="col" class="border-bottom-0" width="50%">제목</th>
-                                        <th scope="col" class="border-bottom-0">작성자</th>
-                                        <th scope="col" class="border-bottom-0">작성일</th>
-                                        <th scope="col" class="border-bottom-0">조회수</th>
+                                        <th scope="col" class="border-bottom-0">프로필</th>
+                                        <th scope="col" class="border-bottom-0">아이디</th>
+                                        <th scope="col" class="border-bottom-0">이름</th>
+                                        <th scope="col" class="border-bottom-0" width="30%">email</th>
+                                        <th scope="col" class="border-bottom-0">등록일</th>
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    <%
+                                        List<MemberDTO> list = null;
+                                        try {
+                                            list = (List<MemberDTO>) request.getAttribute("adminList");
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        if (list.isEmpty()) {
+                                    %>
                                     <tr>
-                                        <td>1</td>
+                                        <td colspan="6">등록된 회원이 없습니다.</td>
+                                    </tr>
+                                    <%
+
+                                    } else {
+                                        for (MemberDTO mb : list) {
+                                    %>
+                                    <tr>
+                                        <td><%=mb.getRowNum()%></td>
+                                        <td>
+                                            <img class="user-avatar rounded-circle mr-2"
+                                                 src="static/images/avatars/0.jpg" alt="User Avatar"
+                                                 style="max-width: 2rem;">
+                                        </td>
+                                        <td><%=mb.getMb_id()%></td>
+                                        <td><%=mb.getMb_name()%></td>
                                         <td>
                                             <div class="title" style="width: 500px">
-                                                제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목
-                                                출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목
-                                                출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목
-                                                출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력
+                                                <%=mb.getMb_email()%>
                                             </div>
                                         </td>
-                                        <td>Brent</td>
-                                        <td>2024-01-12</td>
-                                        <td>11</td>
+                                        <td><%=mb.getMb_regdate()%></td>
                                     </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Clark</td>
-                                        <td>Angela</td>
-                                        <td>2024-01-12</td>
-                                        <td>22</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>Wylie</td>
-                                        <td>Joseph</td>
-                                        <td>2024-01-12</td>
-                                        <td>33</td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td>Garth</td>
-                                        <td>Clementine</td>
-                                        <td>2024-01-12</td>
-                                        <td>44</td>
-                                    </tr>
+                                    <%
+                                            }
+                                        }
+                                    %>
                                     </tbody>
                                 </table>
                             </div>

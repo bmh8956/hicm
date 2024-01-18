@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLEncoder;
+import java.util.List;
 
 @WebServlet("*.adm")
 public class AdminController extends HttpServlet {
@@ -58,7 +59,11 @@ public class AdminController extends HttpServlet {
 		} else if (path.equals("/users.adm")) {
 			res.sendRedirect(def + "users.jsp");
 		} else if (path.equals("/admin.adm")) {
-			res.sendRedirect(def + "admin.jsp");
+//			res.sendRedirect(def + "admin.jsp");
+			List<MemberDTO> list = MemberDAO.getAdminList();
+//			System.out.println(list);
+			req.setAttribute("adminList", list);
+			req.getRequestDispatcher("/admin/admin.jsp").forward(req, res);
 		} else if (path.equals("/board.adm")) {
 			res.sendRedirect(def + "board.jsp");
 		} else if (path.equals("/category.adm")) {
@@ -99,6 +104,25 @@ public class AdminController extends HttpServlet {
 			}
 			session.setAttribute("admin", dto2);
 			System.out.println("login end");
+			pwr.println(r);
+		} else if(path.equals("/join.adm")) {
+			System.out.println("join start");
+			MemberDTO dto = new MemberDTO();
+			dto.setMb_name(req.getParameter("mb_name"));
+			dto.setMb_id(req.getParameter("mb_id"));
+			dto.setMb_auth("admin");
+			dto.setMb_pw(req.getParameter("mb_pw"));
+			dto.setMb_email(req.getParameter("mb_email"));
+			dto.setMb_gender(req.getParameter("mb_gender"));
+			int join = MemberDAO.join(dto);
+			JSONObject r = new JSONObject();
+			ObjectMapper om = new ObjectMapper();
+			if(join == 0) {
+				r.put("msg", "fail");
+			} else {
+				r.put("msg", "success");
+			}
+			System.out.println("join end");
 			pwr.println(r);
 		}
 //		doGet(req, res);

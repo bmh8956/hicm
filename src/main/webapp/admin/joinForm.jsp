@@ -44,6 +44,13 @@
             box-sizing: border-box;
         }
 
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+
         button {
             background-color: #4caf50;
             color: #fff;
@@ -53,25 +60,78 @@
             cursor: pointer;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 </head>
 <body>
-<form action="your_backend_registration_script.php" method="post">
+<form action="your_backend_registration_script.php" method="post" id="frm">
     <label for="id">아이디:</label>
-    <input type="text" id="id" name="id" required>
+    <input type="text" id="id" name="mb_id" required>
 
     <label for="password">비밀번호:</label>
-    <input type="password" id="password" name="password" required>
+    <input type="password" id="password" name="mb_pw" required>
+
+    <label for="name">이름:</label>
+    <input type="text" id="name" name="mb_name" required>
 
     <label for="phone">전화번호:</label>
-    <input type="text" id="phone" name="phone" required>
+    <input type="text" id="phone" name="mb_phone" required>
 
     <label for="email">이메일:</label>
-    <input type="email" id="email" name="email">
+    <input type="email" id="email" name="mb_email">
 
-    <label for="addr">주소:</label>
-    <input type="text" id="addr" name="addr">
+    <label for="gender">성별:</label>
+    <select id="gender" name="mb_gender">
+        <option value="M">남</option>
+        <option value="W">여</option>
+    </select>
 
     <button type="submit">가입하기</button>
 </form>
+
+<script !src="">
+    let join = (frm) => {
+        let data = new FormData(frm);
+        let obj = {}
+        for(let k of data.keys()) {
+            obj[k] = data.get(k);
+        }
+        $.ajax({
+                type: "post",
+                url: "/hicommunity/join.adm",
+                data: obj,
+                success: function (res) {
+                    console.log(res)
+                    // if(res.msg == 'success') {
+                    //     alert("회원가입에 성공했습니다.")
+                    //     location.href = "/hicommunity/loginForm.adm";
+                    // } else {
+                    //     alert("회원가입 처리도중 오류가 발생했습니다.")
+                    //     location.reload();
+                    // }
+                }
+            });
+    }
+
+    let phoneNumber = (tag) => {
+        tag.maxLength = 13
+        tag.value = tag.value.replace(/[^0-9]/g, "");
+        return tag.value.replace(
+            /(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/,
+            "$1-$2-$3"
+        );
+    }
+
+    window.onload = () => {
+        let frm = document.getElementById("frm");
+        frm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            join(frm);
+        })
+        document.getElementById('phone').addEventListener('input', function(e) {
+            e.target.value = phoneNumber(e.target)
+        })
+    }
+</script>
 </body>
 </html>
