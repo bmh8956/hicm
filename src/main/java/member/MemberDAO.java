@@ -52,6 +52,14 @@ public class MemberDAO {
 			"ORDER BY " +
 			"   m.mb_seq desc";
 
+	private static final String MEMBER_CHK =
+			"SELECT " +
+			"	count(*) cnt " +
+			"fROM " +
+			"	member_tb " +
+			"WHERE " +
+			"	mb_id = ";
+
 	public static MemberDTO getAdmin(MemberDTO dto) {
 		MemberDTO dto2 = null;
 		try {
@@ -150,5 +158,25 @@ public class MemberDAO {
 			JDBCUtil.close(rs, pstmt, conn);
 		}
 		return list;
+	}
+
+	public static int member_chk(MemberDTO dto) {
+		int cnt = 0;
+		try {
+			conn = JDBCUtil.getConnection();
+			pstmt = conn.prepareStatement(GET_MEMBER_LIST);
+			pstmt.setString(1, dto.getMb_id());
+
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				cnt = rs.getInt("cnt");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.close(rs, pstmt, conn);
+		}
+
+		return cnt;
 	}
 }

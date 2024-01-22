@@ -102,13 +102,16 @@
                 data: obj,
                 success: function (res) {
                     console.log(res)
-                    // if(res.msg == 'success') {
-                    //     alert("회원가입에 성공했습니다.")
-                    //     location.href = "/hicommunity/loginForm.adm";
-                    // } else {
-                    //     alert("회원가입 처리도중 오류가 발생했습니다.")
-                    //     location.reload();
-                    // }
+                    if(typeof res === 'string') {
+                        res = JSON.parse(res)
+                    }
+                    if(res.msg == 'success') {
+                        alert("회원가입에 성공했습니다.")
+                        location.href = "/hicommunity/loginForm.adm";
+                    } else {
+                        alert("회원가입 처리도중 오류가 발생했습니다.")
+                        location.reload();
+                    }
                 }
             });
     }

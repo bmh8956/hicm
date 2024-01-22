@@ -113,7 +113,7 @@
                     res = JSON.parse(res)
                 }
                 if (res.msg == "success") {
-                    console.log("succ")
+                    console.log("success")
                     let admin = JSON.parse(res.admin)
                     location.href = "/hicommunity/main.adm"
                 } else {

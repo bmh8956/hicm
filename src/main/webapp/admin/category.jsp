@@ -38,60 +38,41 @@
                 <!-- End Page Header -->
                 <!-- Small Stats Blocks -->
                 <div class="row">
-                    <div class="col">
-                        <div class="card card-small overflow-hidden mb-4">
-                            <div class="card-header bg-dark">
-                                <h6 class="m-0 text-white">카테고리1</h6>
+
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 col-md-12 col-sm-12 mb-4">
+                        <div class="card card-small">
+                            <div class="card-header border-bottom">
+                                <h6 class="m-0" style="float: left">메인 카테고리</h6>
+                                <button type="button" class="btn btn-white" style="float: right" id="add_main_cate">+</button>
                             </div>
-                            <div class="card-body p-0 pb-3 bg-dark text-center">
-                                <table class="table table-dark mb-0 list">
-                                    <thead class="thead-dark">
-                                    <tr>
-                                        <th scope="col" class="border-bottom-0">번호</th>
-                                        <th scope="col" class="border-bottom-0" width="50%">제목</th>
-                                        <th scope="col" class="border-bottom-0">작성자</th>
-                                        <th scope="col" class="border-bottom-0">작성일</th>
-                                        <th scope="col" class="border-bottom-0">조회수</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>
-                                            <div class="title" style="width: 500px">
-                                                제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목
-                                                출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목
-                                                출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목
-                                                출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력제목 출력
-                                            </div>
-                                        </td>
-                                        <td>Brent</td>
-                                        <td>2024-01-12</td>
-                                        <td>11</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Clark</td>
-                                        <td>Angela</td>
-                                        <td>2024-01-12</td>
-                                        <td>22</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>Wylie</td>
-                                        <td>Joseph</td>
-                                        <td>2024-01-12</td>
-                                        <td>33</td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td>Garth</td>
-                                        <td>Clementine</td>
-                                        <td>2024-01-12</td>
-                                        <td>44</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                            <div class="card-body p-0">
+                                <ul class="list-group list-group-small list-group-flush" id="main_ul">
+                                    <li class="list-group-item d-flex px-3 main_cate">
+                                        <span class="text-semibold text-fiord-blue">GitHub</span>
+                                        <span class="ml-auto text-right text-semibold text-reagent-gray">▶</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-12 col-sm-12 mb-4">
+                        <div class="card card-small">
+                            <div class="card-header border-bottom">
+                                <h6 class="m-0">서브 카테고리</h6>
+                            </div>
+                            <div class="card-body p-0">
+                                <ul class="list-group list-group-small list-group-flush">
+                                    <li class="list-group-item d-flex px-3">
+                                        <span class="text-semibold text-fiord-blue">GitHub</span>
+                                        <span class="ml-auto text-right text-semibold text-reagent-gray">19,291</span>
+                                    </li>
+                                    <li class="list-group-item d-flex px-3">
+                                        <span class="text-semibold text-fiord-blue">Stack Overflow</span>
+                                        <span class="ml-auto text-right text-semibold text-reagent-gray">11,201</span>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -114,5 +95,47 @@
 <script src="static/scripts/extras.1.1.0.min.js"></script>
 <script src="static/scripts/shards-dashboards.1.1.0.min.js"></script>
 <script src="static/scripts/app/app-blog-overview.1.1.0.js"></script>
+<script>
+    let add_main_cate = () => {
+        let add_main_input = document.getElementById("add_main_input");
+        if(add_main_input) {
+            return;
+        } else {
+            let html = '<li class="list-group-item d-flex px-3">' +
+                                '<input type="text" class="form-control" id="add_main_input">' +
+                                '<button type="button" class="btn btn-white" id="save_main">저장</button>' +
+                        '</li>';
+            document.getElementById("main_ul").innerHTML += html;
+        }
+    }
+
+    let insert_cate = (par) => {
+        let cate = document.getElementById("add_main_input").value;
+        $.ajax({
+            type: "post",
+            url: "addCate.adm",
+            data: {
+                ct_name : cate,
+                ct_parent : par
+            },
+            success: function (res) {
+                console.log(res)
+            }
+        });
+    }
+
+
+    window.onload = () => {
+        let main_cate_all = document.getElementsByClassName("main_cate");
+        let add_main = document.getElementById("add_main_cate");
+        add_main.addEventListener("click", function (e) {
+            add_main_cate();
+        })
+        document.getElementById("save_main").addEventListener("click", function(e) {
+            insert_cate(0);
+        })
+
+    }
+</script>
 </body>
 </html>
