@@ -120,20 +120,13 @@ public class AdminController extends HttpServlet {
 			dto.setMb_pw(req.getParameter("mb_pw"));
 			dto.setMb_email(req.getParameter("mb_email"));
 			dto.setMb_gender(req.getParameter("mb_gender"));
-
+			int join = MemberDAO.join(dto);
 			JSONObject r = new JSONObject();
 			ObjectMapper om = new ObjectMapper();
-
-			int cnt = MemberDAO.member_chk(dto);
-			if(cnt != 0) {
+			if(join == 0) {
 				r.put("msg", "fail");
 			} else {
-				int join = MemberDAO.join(dto);
-				if(join == 0) {
-					r.put("msg", "fail");
-				} else {
-					r.put("msg", "success");
-				}
+				r.put("msg", "success");
 			}
 			System.out.println("join end");
 			pwr.println(r);
@@ -173,6 +166,17 @@ public class AdminController extends HttpServlet {
 			} else {
 				r.put("msg", "success");
 				r.put("list", list);
+			}
+			pwr.println(r);
+		} else if(path.equals("/category_list.adm")) {
+			List<CategoryDTO> list = new ArrayList<>();
+			list = CategoryDAO.get_list();
+			JSONObject r = new JSONObject();
+			if(!list.isEmpty()) {
+				r.put("msg", "success");
+				r.put("list", list);
+			} else {
+				r.put("msg", "fail");
 			}
 			pwr.println(r);
 		}

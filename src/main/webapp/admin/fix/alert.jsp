@@ -10,7 +10,7 @@
     session.invalidate();
 %>
 <script>
-    window.onload = () => {
+    // window.onload = () => {
         let msg = new URL(location.href).searchParams.get('msg')
         let url = new URL(location.href).searchParams.get('url')
         // console.log(msg)
@@ -22,5 +22,5 @@
             url = "/hicommunity/loginForm.adm";
         }
         document.location = url;
-    }
+    // }
 </script>
