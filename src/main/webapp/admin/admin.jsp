@@ -60,6 +60,7 @@
                                         try {
                                             list = (List<MemberDTO>) request.getAttribute("adminList");
                                         } catch (Exception e) {
+
                                             e.printStackTrace();
                                         }
                                         if (list.isEmpty()) {

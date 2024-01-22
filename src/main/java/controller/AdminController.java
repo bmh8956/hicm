@@ -1,5 +1,7 @@
 package controller;
 
+import category.CategoryDAO;
+import category.CategoryDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,6 +16,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("*.adm")
@@ -67,7 +70,10 @@ public class AdminController extends HttpServlet {
 		} else if (path.equals("/board.adm")) {
 			res.sendRedirect(def + "board.jsp");
 		} else if (path.equals("/category.adm")) {
-			res.sendRedirect(def + "category.jsp");
+			List<CategoryDTO> list = new ArrayList<>();
+			list = CategoryDAO.get_list();
+			req.setAttribute("list", list);
+			req.getRequestDispatcher("/admin/category2.jsp").forward(req, res);
 		}
 
 
@@ -123,6 +129,44 @@ public class AdminController extends HttpServlet {
 				r.put("msg", "success");
 			}
 			System.out.println("join end");
+			pwr.println(r);
+		} else if(path.equals("/insertCate.adm")) {
+			CategoryDTO dto = new CategoryDTO();
+			dto.setCt_name(req.getParameter("ct_name"));
+			dto.setCt_parent(Integer.parseInt(req.getParameter("ct_parent")));
+			int result = CategoryDAO.set_category(dto);
+			JSONObject r = new JSONObject();
+			ObjectMapper om = new ObjectMapper();
+			if(result == 0) {
+				r.put("msg", "fail");
+			} else {
+				r.put("msg", "success");
+				r.put("ct", om.writeValueAsString(dto));
+			}
+			pwr.println(r);
+		} else if(path.equals("/delete_cate.adm")) {
+			CategoryDTO dto = new CategoryDTO();
+			dto.setCt_seq(Integer.parseInt(req.getParameter("ct_seq")));
+			int result = CategoryDAO.delete(dto);
+			JSONObject r = new JSONObject();
+			ObjectMapper om = new ObjectMapper();
+			if(result == 0) {
+				r.put("msg", "fail");
+			} else {
+				r.put("msg", "success");
+			}
+			pwr.println(r);
+		} else if(path.equals("/getSub.adm")) {
+			CategoryDTO dto = new CategoryDTO();
+			dto.setCt_parent(Integer.parseInt(req.getParameter("ct_seq")));
+			List<CategoryDTO> list = CategoryDAO.get_list_sub(dto);
+			JSONObject r = new JSONObject();
+			if(list.size() == 0) {
+				r.put("msg", "fail");
+			} else {
+				r.put("msg", "success");
+				r.put("list", list);
+			}
 			pwr.println(r);
 		}
 //		doGet(req, res);
