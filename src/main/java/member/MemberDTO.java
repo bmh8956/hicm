@@ -20,5 +20,6 @@ public class MemberDTO extends CommonDTO {
 	private String mb_is_del;
 	private Date mb_regdate;
 	private Date mb_del_date;
+	private String mb_birth;
 	private boolean loginType;
 }

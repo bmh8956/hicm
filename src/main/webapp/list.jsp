@@ -81,10 +81,11 @@
 <!-- End Breadcrumbs -->
 
 <!-- Shopping Cart -->
-<div class="shopping-cart section">
+<div class="shopping-cart section" style="padding: 0">
     <div class="container">
         <div class="row">
             <div class="col-12">
+                <div style="float: right"><button type="button" class="btn" onclick="location.href='writeForm.do'">글쓰기 <i class="fa fa-pencil"></i></button> </div>
                 <!-- Shopping Summery -->
                 <table class="table shopping-summery list">
                     <thead>
@@ -143,6 +144,7 @@
         </div>
         <!--/ End Pagination -->
     </div>
+</div>
     <!--/ End Shopping Cart -->
 
 

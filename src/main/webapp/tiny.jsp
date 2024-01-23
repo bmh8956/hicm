@@ -18,5 +18,15 @@
 </head>
 <body>
 <textarea name="tiny" id="content" cols="30" rows="10"></textarea>
+<button type="button" onclick="test();">test</button>
+<div id="dv"></div>
+
+<script>
+    let test = () => {
+        let content = tinymce.get("content").getContent();
+        console.log(content)
+        document.getElementById("dv").innerHTML = content
+    }
+</script>
 </body>
 </html>

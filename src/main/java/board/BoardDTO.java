@@ -1,13 +1,15 @@
 package board;
 
+import common.CommonDTO;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class BoardDTO {
+public class BoardDTO extends CommonDTO {
 	private int bd_seq;
 	private int mb_seq;
+	private String mb_id;
 	private int ct_seq;
 	private String bd_type;
 	private String bd_title;

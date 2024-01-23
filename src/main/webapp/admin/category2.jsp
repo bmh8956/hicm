@@ -49,30 +49,30 @@
                             </div>
                             <div class="card-body p-0">
                                 <ul class="list-group list-group-small list-group-flush" id="main_ul">
-                                    <%
-                                        List<CategoryDTO> list = new ArrayList<>();
-                                        try {
-                                            list = (List<CategoryDTO>) request.getAttribute("list");
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                        if(list.isEmpty()) {
-                                    %>
-                                    <li class="list-group-item d-flex px-3 is-active empty" style="cursor: pointer">
-                                        <span class="text-semibold text-fiord-blue">등록된 카테고리가 없습니다.</span>
-                                    </li>
-                                    <%
-                                    } else {
-                                        for(CategoryDTO dto : list) {
-                                    %>
-                                    <li class="list-group-item d-flex px-3 is-active" style="cursor: pointer" seq="<%=dto.getCt_seq()%>" onclick="li_click(this)">
-                                        <span class="text-semibold text-fiord-blue"><%=dto.getCt_name()%></span>
-                                        <span class="ml-auto text-right text-semibold text-reagent-gray cate_del" style="display: none;" seq="<%=dto.getCt_seq()%>" onclick="delete_cate(this)">X</span>
-                                    </li>
-                                    <%
-                                            }
-                                        }
-                                    %>
+<%--                                    <%--%>
+<%--                                        List<CategoryDTO> list = new ArrayList<>();--%>
+<%--                                        try {--%>
+<%--                                            list = (List<CategoryDTO>) request.getAttribute("list");--%>
+<%--                                        } catch (Exception e) {--%>
+<%--                                            e.printStackTrace();--%>
+<%--                                        }--%>
+<%--                                        if(list.isEmpty()) {--%>
+<%--                                    %>--%>
+<%--                                    <li class="list-group-item d-flex px-3 is-active empty" style="cursor: pointer">--%>
+<%--                                        <span class="text-semibold text-fiord-blue">등록된 카테고리가 없습니다.</span>--%>
+<%--                                    </li>--%>
+<%--                                    <%--%>
+<%--                                    } else {--%>
+<%--                                        for(CategoryDTO dto : list) {--%>
+<%--                                    %>--%>
+<%--                                    <li class="list-group-item d-flex px-3 is-active" style="cursor: pointer" seq="<%=dto.getCt_seq()%>" onclick="li_click(this)">--%>
+<%--                                        <span class="text-semibold text-fiord-blue"><%=dto.getCt_name()%></span>--%>
+<%--                                        <span class="ml-auto text-right text-semibold text-reagent-gray cate_del" style="display: none;" seq="<%=dto.getCt_seq()%>" onclick="delete_cate(this)">X</span>--%>
+<%--                                    </li>--%>
+<%--                                    <%--%>
+<%--                                            }--%>
+<%--                                        }--%>
+<%--                                    %>--%>
                                 </ul>
                             </div>
                         </div>
@@ -80,7 +80,8 @@
                     <div class="col-lg-3 col-md-12 col-sm-12 mb-4">
                         <div class="card card-small">
                             <div class="card-header border-bottom">
-                                <h6 class="m-0">서브 카테고리</h6>
+                                <h6 class="m-0" style="float: left">서브 카테고리</h6>
+                                <button type="button" class="btn btn-white" style="float: right" onclick="add_cate('sub')">+</button>
                             </div>
                             <div class="card-body p-0">
                                 <ul class="list-group list-group-small list-group-flush" id="sub_ul">
@@ -132,13 +133,26 @@
                         '   <input type="text" class="form-control" id="ct_name_sub">' +
                         '</span>' +
                         '<span class="ml-auto text-right text-semibold text-reagent-gray">' +
-                            '<button type="button" class="btn btn-white" onclick="insert_cate(1)">저장</button>' +
+                            '<button type="button" class="btn btn-white" onclick="insert_cate_sub()">저장</button>' +
                             // '<button type="button" class="btn btn-white" onclick="delete_cate(1)">저장</button>' +
                         '</span>' +
                     '</li>';
             if(!document.getElementById('ct_name_sub')) {
+                if(document.getElementsByClassName('empty_s').length > 0) {
+                    document.getElementsByClassName('empty_s')[0].remove();
+                }
                 document.getElementById('sub_ul').innerHTML += html;
             }
+        }
+    }
+
+    let insert_cate_sub = () => {
+        let active = document.querySelector("li.is-active.active");
+        if(active) {
+            insert_cate(active.getAttribute("seq"));
+        } else {
+            alert("메인 카테고리를 선택해주세요")
+            return
         }
     }
 
@@ -159,13 +173,14 @@
                 type: "post",
                 url: "insertCate.adm",
                 data: data,
+                async: false,
                 success: function (res) {
                     if(typeof res === 'string') {
                         res = JSON.parse(res)
                     }
-                    console.log("============")
-                    console.log(res)
-                    console.log("============")
+                    // console.log("============")
+                    // console.log(res)
+                    // console.log("============")
                     if(res.msg === 'success') {
                         if(typeof res.ct) {
                             res.ct = JSON.parse(res.ct)
@@ -178,7 +193,11 @@
                         //         '</li>';
                         // document.getElementById((type == 'M')? 'main_ul' : 'side_ul').innerHTML += html;
                         // li_click()
-                        get_list()
+                        if(type == 'M') {
+                            get_list();
+                        } else if(type == 'S') {
+                            get_list(par)
+                        }
                     } else {
                         alert("새로고침 후 다시 시도해주세요")
                     }
@@ -206,12 +225,20 @@
             }
         }
 
-        await get_sub(tag.getAttribute('seq'));
+        if(tag.getAttribute('seq')) {
+            await get_sub(tag.getAttribute('seq'));
+        } else {
+            document.getElementById('sub_ul').innerHTML = '';
+        }
     }
 
     let get_sub = (seq) => {
         let html = '';
         document.getElementById('sub_ul').innerHTML = '';
+        if(!seq) {
+            document.getElementById('sub_ul').innerHTML = '';
+            return
+        }
         $.ajax({
                 type: "post",
                 url: "getSub.adm",
@@ -222,12 +249,12 @@
                     if(typeof res == 'string') {
                         res = JSON.parse(res)
                     }
-                    console.log(res)
+                    // console.log(res)
                     if(res.msg == 'success') {
                         for (let ct of res.list) {
-                            html += '<li class="list-group-item d-flex px-3 is-active" style="cursor: pointer" seq="'+ ct.ct_seq +'">' +
+                            html += '<li class="list-group-item d-flex px-3" seq="'+ ct.ct_seq +'">' +
                                         '<span class="text-semibold text-fiord-blue">'+ ct.ct_name +'</span>' +
-                                        '<span class="ml-auto text-right text-semibold text-reagent-gray cate_del" seq="'+ ct.ct_seq +'" onclick="delete_cate(this)">X</span>' +
+                                        '<span class="ml-auto text-right text-semibold text-reagent-gray cate_del" style="cursor: pointer" seq="'+ ct.ct_seq +'" onclick="delete_cate(this)">X</span>' +
                                     '</li>';
                         }
 
@@ -266,7 +293,7 @@
             });
     }
 
-    let get_list = () => {
+    let get_list = (seq) => {
         let html = '';
         document.getElementById('main_ul').innerHTML = '';
         $.ajax({
@@ -278,20 +305,28 @@
                 }
                 if(res.msg === 'success') {
                     for(let ct of res.list) {
-                        html += '<li class="list-group-item d-flex px-3 is-active" style="cursor: pointer" seq="'+ ct.ct_seq +'" onclick="li_click(this)">' +
+                        html += '<li class="list-group-item d-flex px-3 is-active" seq="'+ ct.ct_seq +'" onclick="li_click(this)" id="'+ ct.ct_seq +'">' +
                                     '<span class="text-semibold text-fiord-blue">'+ ct.ct_name +'</span>' +
-                                    '<span class="ml-auto text-right text-semibold text-reagent-gray cate_del" style="display: none;" seq="'+ ct.ct_seq +'" onclick="delete_cate(this)">X</span>' +
+                                    '<span class="ml-auto text-right text-semibold text-reagent-gray cate_del" style="cursor: pointer"  style="display: none;" seq="'+ ct.ct_seq +'" onclick="delete_cate(this)">X</span>' +
                                 '</li>';
                     }
                 } else {
-                    html = '<li className="list-group-item d-flex px-3 is-active empty" style="cursor: pointer">' +
-                                '<span className="text-semibold text-fiord-blue">등록된 카테고리가 없습니다.</span>' +
+                    html = '<li class="list-group-item d-flex px-3 is-active empty">' +
+                                '<span class="text-semibold text-fiord-blue">등록된 카테고리가 없습니다.</span>' +
                             '</li>';
                 }
                 document.getElementById('main_ul').innerHTML = html;
+                if(res.msg === 'fail') {
+                    document.getElementById('sub_ul').innerHTML = '';
+                    return
+                }
                 let is_active = document.getElementsByClassName('is-active');
                 if (is_active.length > 0 && !is_active[0].classList.contains('empty')) {
-                    li_click();
+                    if(seq) {
+                        li_click(document.getElementById(seq));
+                    } else {
+                        li_click();
+                    }
                 }
             }
         });

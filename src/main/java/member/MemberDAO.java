@@ -33,13 +33,14 @@ public class MemberDAO {
 			"AND " +
 			"   mb_pw = ? " +
 			"AND mb_is_view = ? " +
-			"AND mb_is_del = ? ";
+			"AND mb_is_del = ? " +
+			"AND mb_auth = ?";
 
 	private static final String SET_JOIN =
 			"INSERT INTO " +
 			"   member_tb " +
-			"(mb_auth, mb_id, mb_pw, mb_name, mb_email, mb_gender) " +
-			"VALUES (?, ?, ?, ?, ?, ?)";
+			"(mb_auth, mb_id, mb_pw, mb_name, mb_email, mb_gender, mb_birth) " +
+			"VALUES (?, ?, ?, ?, ?, ?, ?)";
 
 	private static final String GET_MEMBER_LIST =
 			"SELECT " +
@@ -64,9 +65,8 @@ public class MemberDAO {
 		MemberDTO dto2 = null;
 		try {
 			String getMember = "";
-			getMember = GET_MEMBER + "AND mb_auth = ?";
 			conn = JDBCUtil.getConnection();
-			pstmt = conn.prepareStatement(getMember);
+			pstmt = conn.prepareStatement(GET_MEMBER);
 			pstmt.setString(1, dto.getMb_id());
 			pstmt.setString(2, dto.getMb_pw());
 			pstmt.setString(3, dto.getMb_is_view());
@@ -120,6 +120,7 @@ public class MemberDAO {
 			pstmt.setString(4, dto.getMb_name());
 			pstmt.setString(5, dto.getMb_email());
 			pstmt.setString(6, dto.getMb_gender());
+			pstmt.setString(7, dto.getMb_birth());
 
 			result = pstmt.executeUpdate();
 		} catch (Exception e) {
@@ -178,5 +179,36 @@ public class MemberDAO {
 		}
 
 		return cnt;
+	}
+
+	public static MemberDTO userLogin(MemberDTO dto) {
+		MemberDTO dto2 = null;
+		try {
+			conn = JDBCUtil.getConnection();
+			pstmt = conn.prepareStatement(GET_MEMBER);
+			pstmt.setString(1, dto.getMb_id());
+			pstmt.setString(2, dto.getMb_pw());
+			pstmt.setString(3, dto.getMb_is_view());
+			pstmt.setString(4, dto.getMb_is_del());
+			pstmt.setString(5, dto.getMb_auth());
+
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				dto2 = new MemberDTO();
+				dto2.setMb_id(rs.getString("mb_id"));
+				dto2.setMb_name(rs.getString("mb_name"));
+				dto2.setMb_auth(rs.getString("mb_auth"));
+				dto2.setMb_gender(rs.getString("mb_gender"));
+				dto2.setMb_birth(rs.getString("mb_birth"));
+				dto2.setMb_regdate(rs.getDate("mb_regdate"));
+				dto2.setMb_email(rs.getString("mb_email"));
+				dto2.setMb_seq(rs.getInt("mb_seq"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.close(rs, pstmt, conn);
+		}
+		return dto2;
 	}
 }

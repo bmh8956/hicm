@@ -58,6 +58,7 @@
 	<!--<link rel="stylesheet" href="static/user/css/color/color12.css">-->
 
 	<link rel="stylesheet" href="#" id="colors">
+	<link rel="stylesheet" href="static/user/css/my.css">
 	
 </head>
 	<jsp:include page="fix/header.jsp"></jsp:include>
@@ -87,7 +88,7 @@
 							<h2>Register</h2>
 							<p>Please register in order to checkout more quickly</p>
 							<!-- Form -->
-							<form class="form" method="post" action="/join.do">
+							<form class="form" method="post" action="join.do" id="frm">
 								<div class="row">
 									<div class="col-12">
 										<div class="form-group">
@@ -98,13 +99,13 @@
 									<div class="col-12">
 										<div class="form-group">
 											<label>비밀번호<span>*</span></label>
-											<input type="password" name="mb_pw" placeholder="" required="required">
+											<input type="password" name="mb_pw" placeholder="" required="required" id="pw">
 										</div>
 									</div>
 									<div class="col-12">
 										<div class="form-group">
 											<label>비밀번호 확인<span>*</span></label>
-											<input type="password" name="mb_pw_check" placeholder="" required="required">
+											<input type="password" name="mb_pw_check" placeholder="" required="required" id="pw_chk">
 										</div>
 									</div>
 									<div class="col-12">
@@ -127,15 +128,23 @@
 									</div>
 									<div class="col-12">
 										<div class="form-group">
-											<label>이미지<span>*</span></label>
-											<input type="file" name="img" id="img" placeholder="" required="required" style="height: 100%">
-											<input type="hidden" name="mb_img">
+											<label>성별<span>*</span></label>
+											<input type="radio" name="mb_gender" id="c" value="0" class="join" checked>선택
+											<input type="radio" name="mb_gender" id="m" value="M" class="join">남
+											<input type="radio" name="mb_gender" id="w" value="W" class="join">여
 										</div>
 									</div>
+<%--									<div class="col-12">--%>
+<%--										<div class="form-group">--%>
+<%--											<label>이미지<span>*</span></label>--%>
+<%--											<input type="file" name="img" id="img" placeholder="" style="height: 100%">--%>
+<%--											<input type="hidden" name="mb_img">--%>
+<%--										</div>--%>
+<%--									</div>--%>
 									<div class="col-12">
 										<div class="form-group login-btn">
-											<button class="btn" type="submit">Register</button>
-											<a href="login.jsp" class="btn">Login</a>
+											<button class="btn" type="submit" id="btn">Register</button>
+											<a href="loginForm.do" class="btn">Login</a>
 										</div>
 									</div>
 								</div>
@@ -192,8 +201,62 @@
 	<script src="static/user/js/datepicker.js"></script>
 <script>
 	$(function () {
-		$("#datepicker1").datepicker();
+		$("#datepicker1").datepicker({
+			changeYear : true,
+			changeMonth : true,
+			yearRange: 'c-100:c+10',
+			maxDate : 0
+		});
 	})
+
+	let join_chk = () => {
+		let frm = document.getElementById("frm");
+		let form = new FormData(frm);
+		let obj = {};
+		for(let k of form.keys()) {
+			obj[k] = form.get(k);
+		}
+		if(obj['mb_pw'] != obj['mb_pw_check']) {
+			alert("비밀번호를 확인해주세요");
+			document.getElementById('pw').focus();
+			return;
+		}
+		if(obj['mb_gender'] == 0) {
+			alert("성별을 선택해주세요");
+			document.getElementById("c").focus();
+			return
+		}
+		// console.log(obj)
+		// return
+		// frm.submit();
+
+		$.ajax({
+		        type: "post",
+		        url: "join.do",
+		        data: obj,
+		        success: function (res) {
+					if(typeof res === 'string') {
+						res = JSON.parse(res)
+					}
+					if(res.msg === 'success') {
+						alert("회원가입이 완료되었습니다.");
+						location.href = "loginForm.do";
+					} else {
+						alert("오류가 발생했습니다.")
+						return
+					}
+		        }
+		    });
+
+	}
+
+	window.onload = () => {
+		let frm = document.getElementById("frm");
+		frm.addEventListener("submit", function(e) {
+			e.preventDefault();
+			join_chk()
+		})
+	}
 </script>
 </body>
 </html>

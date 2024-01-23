@@ -23,7 +23,7 @@ public class JDBCUtil {
 	
 		try { 
 			Class.forName(driver);  
-			conn = DriverManager.getConnection(url,"C##PROJ", "1234");
+			conn = DriverManager.getConnection(url,"C##hicommunity", "1234");
 //			System.out.println ("DB 연결이 성공 했습니다. "); 
 			
 		}catch (Exception e) {

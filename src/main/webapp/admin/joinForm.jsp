@@ -62,9 +62,10 @@
     </style>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"
             integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <body>
-<form action="your_backend_registration_script.php" method="post" id="frm">
+<form action="" method="post" id="frm">
     <label for="id">아이디:</label>
     <input type="text" id="id" name="mb_id" required>
 
@@ -86,10 +87,27 @@
         <option value="W">여</option>
     </select>
 
+    <label for="datepicker">
+        <input type="text" name="mb_birth" id="datepicker" readonly>
+    </label>
+
     <button type="submit">가입하기</button>
 </form>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="admin/static/datepicker.js"></script>
 
 <script !src="">
+    $(function () {
+        $("#datepicker").datepicker({
+            changeYear : true,
+            changeMonth : true,
+            yearRange: 'c-100:c+10',
+            maxDate : 0
+        });
+    })
+
     let join = (frm) => {
         let data = new FormData(frm);
         let obj = {}

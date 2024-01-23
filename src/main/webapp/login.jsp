@@ -123,12 +123,12 @@
 							<h2>Login</h2>
 							<p>Please register in order to checkout more quickly</p>
 							<!-- Form -->
-							<form class="form" method="post" action="login.do">
+							<form class="form" method="post" action="login.do" id="frm">
 								<div class="row">
 									<div class="col-12">
 										<div class="form-group">
 											<label>ID<span>*</span></label>
-											<input type="email" name="mb_id" placeholder="" required="required">
+											<input type="text" name="mb_id" placeholder="" required="required" id="mb_id">
 										</div>
 									</div>
 									<div class="col-12">
@@ -140,12 +140,12 @@
 									<div class="col-12">
 										<div class="form-group login-btn">
 											<button class="btn" type="submit">Login</button>
-											<a href="register.jsp" class="btn">Register</a>
+											<a href="joinForm.do" class="btn">Register</a>
 										</div>
 										<div class="checkbox">
-											<label class="checkbox-inline" for="2"><input name="news" id="2" type="checkbox">Remember me</label>
+											<label for="rem"><input name="news" id="rem" type="checkbox">Remember me</label>
 										</div>
-										<a href="#" class="lost-pass">Lost your password?</a>
+<%--										<a href="#" class="lost-pass">Lost your password?</a>--%>
 									</div>
 								</div>
 							</form>
@@ -158,96 +158,7 @@
 		<!--/ End Login -->
 		
 		<!-- Start Footer Area -->
-		<footer class="footer">
-			<!-- Footer Top -->
-			<div class="footer-top section">
-				<div class="container">
-					<div class="row">
-						<div class="col-lg-5 col-md-6 col-12">
-							<!-- Single Widget -->
-							<div class="single-footer about">
-								<div class="logo">
-									<a href="/hicommunity"><img src="static/user/images/logo2.png" alt="#"></a>
-								</div>
-								<p class="text">Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue,  magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.</p>
-								<p class="call">Got Question? Call us 24/7<span><a href="tel:123456789">+0123 456 789</a></span></p>
-							</div>
-							<!-- End Single Widget -->
-						</div>
-						<div class="col-lg-2 col-md-6 col-12">
-							<!-- Single Widget -->
-							<div class="single-footer links">
-								<h4>Information</h4>
-								<ul>
-									<li><a href="#">About Us</a></li>
-									<li><a href="#">Faq</a></li>
-									<li><a href="#">Terms & Conditions</a></li>
-									<li><a href="#">Contact Us</a></li>
-									<li><a href="#">Help</a></li>
-								</ul>
-							</div>
-							<!-- End Single Widget -->
-						</div>
-						<div class="col-lg-2 col-md-6 col-12">
-							<!-- Single Widget -->
-							<div class="single-footer links">
-								<h4>Customer Service</h4>
-								<ul>
-									<li><a href="#">Payment Methods</a></li>
-									<li><a href="#">Money-back</a></li>
-									<li><a href="#">Returns</a></li>
-									<li><a href="#">Shipping</a></li>
-									<li><a href="#">Privacy Policy</a></li>
-								</ul>
-							</div>
-							<!-- End Single Widget -->
-						</div>
-						<div class="col-lg-3 col-md-6 col-12">
-							<!-- Single Widget -->
-							<div class="single-footer social">
-								<h4>Get In Tuch</h4>
-								<!-- Single Widget -->
-								<div class="contact">
-									<ul>
-										<li>NO. 342 - London Oxford Street.</li>
-										<li>012 United Kingdom.</li>
-										<li>info@eshop.com</li>
-										<li>+032 3456 7890</li>
-									</ul>
-								</div>
-								<!-- End Single Widget -->
-								<ul>
-									<li><a href="#"><i class="ti-facebook"></i></a></li>
-									<li><a href="#"><i class="ti-twitter"></i></a></li>
-									<li><a href="#"><i class="ti-flickr"></i></a></li>
-									<li><a href="#"><i class="ti-instagram"></i></a></li>
-								</ul>
-							</div>
-							<!-- End Single Widget -->
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- End Footer Top -->
-			<div class="copyright">
-				<div class="container">
-					<div class="inner">
-						<div class="row">
-							<div class="col-lg-6 col-12">
-								<div class="left">
-									<p>Copyright © 2020 <a href="http://www.wpthemesgrid.com" target="_blank">Wpthemesgrid</a>  -  All Rights Reserved.</p>
-								</div>
-							</div>
-							<div class="col-lg-6 col-12">
-								<div class="right">
-									<img src="static/user/images/payments.png" alt="#">
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</footer>
+		<jsp:include page="fix/footer.jsp"></jsp:include>
 		<!-- /End Footer Area -->
 		
 	<!-- Jquery -->
@@ -286,5 +197,60 @@
 	<script src="static/user/js/easing.js"></script>
 	<!-- Active JS -->
 	<script src="static/user/js/active.js"></script>
+
+	<script !src="">
+		let login = () => {
+			let frm = document.getElementById("frm");
+			let fmd = new FormData(frm);
+			let obj = {}
+			for(let k of fmd.keys()) {
+				obj[k] = fmd.get(k);
+				if(obj[k] == '') {
+					return
+				}
+			}
+			$.ajax({
+			        type: "post",
+			        url: "login.do",
+			        data: obj,
+			        success: function (res) {
+			            if(typeof res === 'string') {
+							res = JSON.parse(res);
+						}
+						if(res.msg === 'success') {
+							if(document.getElementById("rem").checked) {
+								localStorage.setItem("id", obj['mb_id']);
+							} else {
+								if(localStorage.getItem("id")) {
+									localStorage.removeItem("id")
+								}
+							}
+							location.href = "/hicommunity";
+						} else {
+							alert("아이디 또는 비밀번호가 잘못되었습니다.");
+							// location.reload();
+						}
+			        }
+			    });
+
+		}
+
+		window.onload = () => {
+			let id = localStorage.getItem("id");
+			console.log(id)
+			if(id != null) {
+				document.getElementById("mb_id").value = id;
+				document.getElementById("rem").parentElement.classList.add('checked');
+			} else {
+				document.getElementById("mb_id").value = '';
+				document.getElementById("rem").parentElement.classList.remove('checked');
+			}
+			let frm = document.getElementById("frm");
+			frm.addEventListener('submit', function (e) {
+				e.preventDefault();
+				login();
+			})
+		}
+	</script>
 </body>
 </html>
