@@ -3,6 +3,7 @@ package common;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,5 +31,13 @@ public class FileUtil {
 		oldFile.renameTo(newFile);
 
 		return new_name;
+	}
+
+	public static String file(String origin, String save) {
+		JSONObject jo = new JSONObject();
+		jo.put("origin", origin);
+		jo.put("save", save);
+		jo.put("file_path", "upload/image/" + save);
+		return jo.toString();
 	}
 }

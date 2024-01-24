@@ -40,14 +40,14 @@ public class FileController extends HttpServlet {
 		PrintWriter pwr = res.getWriter();
 
 		if(path.equals("/boardInsert.fi")) {
-			String name = req.getParameter("mb_img");
+			String name = req.getParameter("bd_img");
 			int result = 0;
 
 			BoardDTO dto = new BoardDTO();
 			dto.setBd_type("user");
 			dto.setBd_title(req.getParameter("bd_title"));
-//			dto.setMb_seq(Integer.parseInt(req.getParameter("mb_seq")));
-//			dto.setCt_seq(Integer.parseInt(req.getParameter("ct_seq")));
+			dto.setMb_seq(Integer.parseInt(req.getParameter("mb_seq")));
+			dto.setCt_seq(Integer.parseInt(req.getParameter("ct_seq")));
 			dto.setMb_id(req.getParameter("mb_id"));
 			dto.setBd_content(req.getParameter("bd_content"));
 			String saveDirec = "C:\\intellij workspace\\hicm\\src\\main\\webapp\\upload\\image";
@@ -55,11 +55,14 @@ public class FileController extends HttpServlet {
 			String saveFileName = FileUtil.reName(saveDirec, origin);
 			dto.setOriginName(origin);
 			dto.setSaveName(saveFileName);
-			System.out.println(dto);
 			JSONObject r = new JSONObject();
 			r.put("origin_name", origin);
 			r.put("save_name", saveFileName);
+//			r.put("file_path", saveDirec + File.separator + saveFileName);
+//			r.put("file_path", "upload/image" + File.separator + saveFileName);
+			r.put("file_path", "upload/image/" + saveFileName);
 			dto.setBd_img(r.toString());
+			System.out.println(dto);
 
 			JSONObject r2 = new JSONObject();
 			result = BoardDAO.insert(dto);

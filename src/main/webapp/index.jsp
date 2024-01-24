@@ -102,6 +102,7 @@
                                 <div class="row">
                                     <div class="col-xl-3 col-lg-4 col-md-4 col-12 main_list">
                                         <div class="card card-small card-post h-100">
+                                            <div class="card-post__image" style="background-image: url('upload/image/20240124_10263070.jpg');"></div>
                                             <div class="card-body">
                                                 <h5 class="card-title">
                                                     <a class="text-fiord-blue" href="#">Extremity so attending objection as

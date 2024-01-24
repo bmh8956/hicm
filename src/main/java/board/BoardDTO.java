@@ -19,4 +19,6 @@ public class BoardDTO extends CommonDTO {
 	private String bd_is_del;
 	private Date bd_regdate;
 	private Date bd_del_date;
+
+	private String ct_name;
 }

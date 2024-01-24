@@ -162,13 +162,13 @@
 										<div class="col-lg-6 col-12">
 											<div class="form-group">
 												<label>제목<span>*</span></label>
-												<input name="bd_title" type="text" placeholder="">
+												<input name="bd_title" type="text" placeholder="" required>
 											</div>
 										</div>
 										<div class="col-lg-6 col-12">
 											<div class="form-group">
 												<label>작성자<span>*</span></label>
-												<input name="mb_name" type="text" placeholder="" readonly value="<%=user.getMb_id()%>">
+												<input name="mb_id" type="text" placeholder="" readonly value="<%=user.getMb_id()%>" required>
 												<input type="hidden" name="mb_seq" value="<%=user.getMb_seq()%>">
 											</div>
 										</div>
@@ -195,7 +195,7 @@
 												<label>이미지<span>*</span></label>
 												<input name="file_name" type="text" id="file_name" placeholder="" readonly onclick="document.getElementById('img').click();">
 												<input type="file" style="display: none" name="img" id="img" accept="image/*">
-												<input type="text" style="display: none" name="mb_img" id="mb_img">
+												<input type="text" style="display: none" name="bd_img" id="bd_img">
 											</div>
 										</div>
 										<div class="col-12">
@@ -324,6 +324,7 @@
 		for(let k of fmd.keys()) {
 			obj[k] = fmd.get(k);
 		}
+		fmd.set("ct_seq", obj['depth_2']);
 		console.log(obj)
 
 		$.ajax({
@@ -337,9 +338,10 @@
 					if(typeof res === 'string') {
 					    res = JSON.parse(res)
 					}
-					console.log(res)
+					// console.log(res)
 					if(res.msg === 'success') {
-
+						alert("게시글이 등록되었습니다.")
+						location.href = "list.do?depth="+ obj['depth_2'] +"&ct_seq=" + obj['ct_seq'] + "&mb_seq=" + obj['mb_seq'];
 					} else {
 
 					}
@@ -382,7 +384,7 @@
 
 		document.getElementById("img").addEventListener("change", function (e) {
 			thumb(e)
-			document.getElementById("mb_img").value = e.target.files[0].name
+			document.getElementById("bd_img").value = e.target.files[0].name
 			document.getElementById("file_name").value = e.target.files[0].name
 			// console.log(document.getElementById("mb_img").value)
 		})

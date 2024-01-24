@@ -1,10 +1,13 @@
 package controller;
 
+import board.BoardDAO;
 import board.BoardDTO;
 import category.CategoryDAO;
 import category.CategoryDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import common.Common;
+import common.PageDTO;
+import common.Paging;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -18,6 +21,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -73,6 +77,53 @@ public class MainController extends HttpServlet {
 		} else if(path.equals("/writeForm.do")) {
 
 			req.getRequestDispatcher("writeForm.jsp").forward(req, res);
+		} else if(path.equals("/getList.do")) {
+			List<BoardDTO> list = new ArrayList<>();
+			BoardDTO dto = new BoardDTO();
+			JSONObject r = new JSONObject();
+			ObjectMapper om = new ObjectMapper();
+			String pInfo = "";
+			String type = req.getParameter("list_type");
+			if(type.equals("my")) {
+				dto.setMb_seq(Integer.parseInt(req.getParameter("mb_seq")));
+				dto.setPage(Integer.parseInt(req.getParameter("page")));
+				dto.setListType(type);
+//				Paging pg = new Paging();
+//				pg.setPageSize(10);
+//				pg.setBlockPage(5);
+//				pg.setTotalCount(BoardDAO.totalCount(dto));
+//				pg.setPageNum(Integer.parseInt(req.getParameter("page")));
+//				System.out.println(pg);
+//				System.out.println(pg.getPageNum());
+				PageDTO pd = new PageDTO(BoardDAO.totalCount(dto), Integer.parseInt(req.getParameter("page")), 10);
+				pInfo = om.writeValueAsString(pd);
+				list = BoardDAO.getList(dto, pd);
+			}
+
+			if(list.size() == 0 || list.isEmpty()) {
+				r.put("msg", "fail");
+			} else {
+				r.put("msg", "success");
+				r.put("list", list);
+				r.put("count", BoardDAO.totalCount(dto));
+				r.put("paging", pInfo);
+			}
+
+			pwr.println(r);
+		} else if(path.equals("/boardTest.do")) {
+			int resa = 0;
+			for(int i=0;i<1000;i++) {
+				BoardDTO dto = new BoardDTO();
+				dto.setCt_seq(87);
+				dto.setMb_seq(42);
+				dto.setBd_type("user");
+				dto.setBd_title("test" + i);
+				dto.setBd_content("content" + i);
+				dto.setBd_img("img" + i);
+				dto.setMb_id("bmh" + i);
+			    BoardDAO.insert(dto);
+				System.out.println(i);
+			}
 		} else {
 			res.sendRedirect("404.jsp");
 		}

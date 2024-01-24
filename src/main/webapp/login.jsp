@@ -218,7 +218,7 @@
 							res = JSON.parse(res);
 						}
 						if(res.msg === 'success') {
-							if(document.getElementById("rem").checked) {
+							if(document.getElementById("rem").parentElement.classList.contains('checked')) {
 								localStorage.setItem("id", obj['mb_id']);
 							} else {
 								if(localStorage.getItem("id")) {

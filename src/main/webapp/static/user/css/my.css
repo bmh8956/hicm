@@ -35,3 +35,13 @@ input[type=radio].join {
 .main_list {
     margin-top: 3%;
 }
+
+.card-post__image {
+    position: relative;
+    min-height: 10.3125rem;
+    border-top-left-radius: 0.625rem;
+    border-top-right-radius: 0.625rem;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
