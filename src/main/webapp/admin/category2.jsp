@@ -178,21 +178,10 @@
                     if(typeof res === 'string') {
                         res = JSON.parse(res)
                     }
-                    // console.log("============")
-                    // console.log(res)
-                    // console.log("============")
                     if(res.msg === 'success') {
                         if(typeof res.ct) {
                             res.ct = JSON.parse(res.ct)
                         }
-                        // let li = document.querySelector("li.cate" + type);
-                        // li.remove();
-                        // html = '<li class="list-group-item d-flex px-3 is-active" style="cursor: pointer" seq="'+ res.ct.ct_seq +'" onclick="li_click(this)">' +
-                        //             '<span class="text-semibold text-fiord-blue">'+ res.ct.ct_name +'</span>' +
-                        //             '<span class="ml-auto text-right text-semibold text-reagent-gray cate_del" style="display: none;" seq="'+ res.ct.ct_seq +'" onclick="delete_cate(this)">X</span>' +
-                        //         '</li>';
-                        // document.getElementById((type == 'M')? 'main_ul' : 'side_ul').innerHTML += html;
-                        // li_click()
                         if(type == 'M') {
                             get_list();
                         } else if(type == 'S') {
@@ -283,8 +272,6 @@
                         res = JSON.parse(res);
                     }
                     if(res.msg == 'success') {
-                        // tag.parentNode.remove();
-                        // li_click();
                         get_list();
                     } else {
 

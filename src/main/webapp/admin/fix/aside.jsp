@@ -93,7 +93,7 @@
 </aside>
 <script>
     let path = location.pathname
-    path = path.split("/")[path.split("/").length - 1].replace(".jsp", "");
+    path = path.split("/")[path.split("/").length - 1].replace(".adm", "");
     let li = document.querySelectorAll('li');
     for (let l of li) {
         if (l.id == path) {

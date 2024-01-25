@@ -134,12 +134,12 @@ public class MainController extends HttpServlet {
 			int resa = 0;
 			for(int i=0;i<1000;i++) {
 				BoardDTO dto = new BoardDTO();
-				dto.setCt_seq(87);
-				dto.setMb_seq(42);
+				dto.setCt_seq(24);
+				dto.setMb_seq(21);
 				dto.setBd_type("user");
 				dto.setBd_title("test" + i);
 				dto.setBd_content("content" + i);
-				dto.setBd_img("img" + i);
+				dto.setBd_img("");
 				dto.setMb_id("bmh" + i);
 			    BoardDAO.insert(dto);
 				System.out.println(i);

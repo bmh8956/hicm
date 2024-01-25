@@ -2,6 +2,7 @@ package board;
 
 import common.CommonDTO;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 

@@ -16,7 +16,7 @@
                     <!-- Single Widget -->
                     <div class="single-footer about">
                         <div class="logo">
-                            <a href="/hicommunity"><img src="static/user/images/logo2.png" alt="#"></a>
+                            <a href="/hicommunity"><img src="static/user/images/logo_22.png" alt="#"></a>
                         </div>
                         <p class="text">Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, magna
                             eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor,

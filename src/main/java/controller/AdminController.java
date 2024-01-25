@@ -161,7 +161,7 @@ public class AdminController extends HttpServlet {
 			dto.setCt_parent(Integer.parseInt(req.getParameter("ct_seq")));
 			List<CategoryDTO> list = CategoryDAO.get_list_sub(dto);
 			JSONObject r = new JSONObject();
-			if(list.size() == 0) {
+			if(list.isEmpty()) {
 				r.put("msg", "fail");
 			} else {
 				r.put("msg", "success");
