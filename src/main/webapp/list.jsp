@@ -270,18 +270,8 @@
     }
 
     let paging = (cnt, info) => {
-        console.log(cnt)
-        console.log(info)
         let html = '';
         let page = document.getElementById("page").value
-
-        // <li><a href="#"><i className="ti-arrow-left"></i><i className="ti-arrow-left"></i></a></li>
-        // <li><a href="#"><i className="ti-arrow-left"></i></a></li>
-        // <li className="active"><a href="#">1</a></li>
-        // <li><a href="#">2</a></li>
-        // <li><a href="#">3</a></li>
-        // <li><a href="#"><i className="ti-arrow-right"></i></a></li>
-        // <li><a href="#"><i className="ti-arrow-right"></i><i className="ti-arrow-right"></i></a></li>
 
         if(info.startPage != 1 && cnt > 0) {
             html += '<li><a href="javascript:get_list(document.getElementById(`list_type`).value, 1)"><<</a></li>' +
@@ -289,16 +279,11 @@
         }
         for(let i=info.startPage;i<=info.endPage;i++) {
             html += '<li ' + ((i == page)? 'class="active"' : '') + '><a href="javascript:get_list(document.getElementById(`list_type`).value, '+ i +')">'+ i +'</a></li>';
-            if(i == page) {
-                console.log(i)
-                console.log(page)
-            }
         }
         if(info.endPage != info.lastPage) {
            html += '<li><a href="javascript:get_list(document.getElementById(`list_type`).value, '+ (info.endPage + 1) +')">></a></li>' +
                     '<li><a href="javascript:get_list(document.getElementById(`list_type`).value, '+ info.lastPage +')">>></a></li>';
         }
-        // console.log(html)
         document.getElementById("pagination").innerHTML = html;
 
     }
