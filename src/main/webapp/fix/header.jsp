@@ -155,7 +155,7 @@
                             if (user != null) {
                         %>
                         <div class="sinlge-bar">
-                            <button class="my_content">내 글목록 <i class="fa fa-list"></i></button>
+                            <button class="my_content" onclick="location.href='list.do?list_type=my'">내 글목록 <i class="fa fa-list"></i></button>
                         </div>
                         <%
                             }
@@ -199,7 +199,7 @@
                                                 for (CategoryDTO dto : list) {
                                             %>
                                             <li>
-                                                <a href="list.do?depth=1&ct_seq=<%=dto.getCt_seq()%>"
+                                                <a href="list.do?depth=1&ct_seq=<%=dto.getCt_seq()%>&list_type=list&ct_name=<%=dto.getCt_name()%>"
                                                    class="main_category" id="<%=dto.getCt_seq()%>"><%=dto.getCt_name()%>
                                                 </a>
                                                 <%
@@ -219,7 +219,7 @@
                                                         for (CategoryDTO sub : sList) {
                                                     %>
                                                     <li>
-                                                        <a href="list.do?depth=2&ct_seq=<%=sub.getCt_seq()%>"><%=sub.getCt_name()%>
+                                                        <a href="list.do?depth=2&ct_seq=<%=sub.getCt_seq()%>&list_type=list&ct_name=<%=sub.getCt_name()%>&depth_p=1&ct_seq_p=<%=dto.getCt_seq()%>&ct_name_p=<%=dto.getCt_name()%>"><%=sub.getCt_name()%>
                                                         </a>
                                                     </li>
                                                     <%

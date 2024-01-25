@@ -1,3 +1,11 @@
+<%@ page import="category.CategoryDTO" %>
+<%@ page import="category.CategoryDAO" %>
+<%@ page import="java.util.List" %>
+<%@ page import="board.BoardDTO" %>
+<%@ page import="board.BoardDAO" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="com.fasterxml.jackson.databind.ObjectMapper" %>
+<%@ page import="com.fasterxml.jackson.core.type.TypeReference" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -60,7 +68,14 @@
 
     <link rel="stylesheet" href="#" id="colors">
     <link rel="stylesheet" href="static/user/css/my.css">
-
+<style>
+    .card-body {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 7;
+        overflow: hidden;
+    }
+</style>
 </head>
 <jsp:include page="fix/header.jsp"></jsp:include>
 <!-- Start Product Area -->
@@ -69,7 +84,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="section-title">
-                    <h2>관리자 인증 게시물</h2>
+                    <h2>NEW</h2>
                 </div>
             </div>
         </div>
@@ -79,70 +94,68 @@
                     <div class="nav-main">
                         <!-- Tab Nav -->
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#man"
-                                                    role="tab">Man</a></li>
-                            <li class="nav-item"><a class="nav-link" data-toggle="tab"
-                                                    href="#women"
-                                                    role="tab">Woman</a></li>
-                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#kids" role="tab">Kids</a>
-                            </li>
-                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#accessories" role="tab">Accessories</a>
-                            </li>
-                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#essential" role="tab">Essential</a>
-                            </li>
-                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#prices"
-                                                    role="tab">Prices</a></li>
+                            <%
+                                List<CategoryDTO> main = CategoryDAO.get_list();
+								int i = 0;
+                                for (CategoryDTO ctm : main) {
+                            %>
+                            <li class="nav-item"><a class="nav-link <%=(i == 0)? "active" : ""%>" data-toggle="tab" href="#<%=ctm.getCt_name()%>"
+                                                    role="tab"><%=ctm.getCt_name()%>
+                            </a></li>
+                            <%
+                                    i++;
+                                }
+                            %>
                         </ul>
                         <!--/ End Tab Nav -->
                     </div>
                     <div class="tab-content" id="myTabContent">
                         <!-- Start Single Tab -->
-                        <div class="tab-pane fade show active" id="man" role="tabpanel">
+                        <%
+                            int j = 0;
+                            for(CategoryDTO ctm : main) {
+                        %>
+                        <div class="tab-pane fade show <%=(j == 0)? "active" : "" %>" id="<%=ctm.getCt_name()%>" role="tabpanel">
                             <div class="tab-single">
                                 <div class="row">
+                                    <%
+                                        BoardDTO board = new BoardDTO();
+										board.setCt_seq(ctm.getCt_seq());
+                                        List<BoardDTO> bd_list = BoardDAO.main_list(board);
+										for(BoardDTO bd : bd_list) {
+                                            String img = bd.getBd_img();
+                                            ObjectMapper om = new ObjectMapper();
+                                            TypeReference<Map<String, Object>> tr = new TypeReference<Map<String, Object>>(){};
+                                            Map<String, Object> map = om.readValue(img, tr);
+                                    %>
                                     <div class="col-xl-3 col-lg-4 col-md-4 col-12 main_list">
                                         <div class="card card-small card-post h-100">
-                                            <div class="card-post__image" style="background-image: url('upload/image/20240124_10263070.jpg');"></div>
+                                            <div class="card-post__image"
+                                                 style="background-image: url('<%=map.get("file_path")%>');"></div>
                                             <div class="card-body">
                                                 <h5 class="card-title">
-                                                    <a class="text-fiord-blue" href="#">Extremity so attending objection as
-                                                        engrossed</a>
+                                                    <a class="text-fiord-blue" href="getBoard.do?bd_seq=<%=bd.getBd_seq()%>"><%=bd.getBd_title()%></a>
                                                 </h5>
-                                                <p class="card-text">Morning prudent removal an letters by. On could my in
-                                                    order never it. Or excited certain sixteen it to parties colonel not
-                                                    seeing...</p>
+                                                <p class="card-text"><%=bd.getBd_content()%>>.</p>
                                             </div>
                                             <div class="card-footer text-muted border-top py-3">
-                    <span class="d-inline-block">By
-                      <a class="text-fiord-blue" href="#">Alene Trenton</a> in
-                      <a class="text-fiord-blue" href="#">News</a>
-                    </span>
+                                                <span class="d-inline-block">By
+                                                  <a class="text-fiord-blue" href="#"><%=bd.getMb_id()%></a>
+<%--                                                  <a class="text-fiord-blue" href="#">News</a>--%>
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-3 col-lg-4 col-md-4 col-12 main_list">
-                                        <div class="card card-small card-post h-100">
-                                            <div class="card-body">
-                                                <h5 class="card-title">
-                                                    <a class="text-fiord-blue" href="#">Extremity so attending objection as
-                                                        engrossed</a>
-                                                </h5>
-                                                <p class="card-text">Morning prudent removal an letters by. On could my in
-                                                    order never it. Or excited certain sixteen it to parties colonel not
-                                                    seeing...</p>
-                                            </div>
-                                            <div class="card-footer text-muted border-top py-3">
-                    <span class="d-inline-block">By
-                      <a class="text-fiord-blue" href="#">Alene Trenton</a> in
-                      <a class="text-fiord-blue" href="#">News</a>
-                    </span>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <%
+                                        }
+                                    %>
                                 </div>
                             </div>
                         </div>
                         <!--/ End Single Tab -->
+                        <%
+                            }
+                        %>
                     </div>
                 </div>
             </div>

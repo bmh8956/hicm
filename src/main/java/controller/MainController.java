@@ -45,6 +45,7 @@ public class MainController extends HttpServlet {
 
 		List<CategoryDTO> cList = CategoryDAO.get_list();
 		req.setAttribute("cate_list", cList);
+		HttpSession session = req.getSession();
 
 		if(path.equals("/test2.do")) {
 			res.sendRedirect("test2.jsp");
@@ -69,6 +70,23 @@ public class MainController extends HttpServlet {
 		} else if(path.equals("/list.do")) {
 
 //			res.sendRedirect("list.jsp");
+
+			String list_type = req.getParameter("list_type");
+			if(list_type == null) {
+				res.sendRedirect("/hicommunity");
+				return;
+			} else if(list_type.equals("my")) {
+				MemberDTO user = (MemberDTO) session.getAttribute("user");
+				if (user == null) {
+					res.sendRedirect("/hicommunity");
+					return;
+				}
+			} else if(list_type.equals("list")) {
+				if(req.getParameter("depth") == null || req.getParameter("ct_seq") == null) {
+					res.sendRedirect("/hicommunity");
+					return;
+				}
+			}
 			req.getRequestDispatcher("list.jsp").forward(req, res);
 		} else if(path.equals("/editor.do")) {
 			res.sendRedirect("editor_test.jsp");
@@ -86,19 +104,14 @@ public class MainController extends HttpServlet {
 			String type = req.getParameter("list_type");
 			if(type.equals("my")) {
 				dto.setMb_seq(Integer.parseInt(req.getParameter("mb_seq")));
-				dto.setPage(Integer.parseInt(req.getParameter("page")));
-				dto.setListType(type);
-//				Paging pg = new Paging();
-//				pg.setPageSize(10);
-//				pg.setBlockPage(5);
-//				pg.setTotalCount(BoardDAO.totalCount(dto));
-//				pg.setPageNum(Integer.parseInt(req.getParameter("page")));
-//				System.out.println(pg);
-//				System.out.println(pg.getPageNum());
-				PageDTO pd = new PageDTO(BoardDAO.totalCount(dto), Integer.parseInt(req.getParameter("page")), 10);
-				pInfo = om.writeValueAsString(pd);
-				list = BoardDAO.getList(dto, pd);
+			} else if(type.equals("list")) {
+				dto.setCt_seq(Integer.parseInt(req.getParameter("ct_seq")));
+				dto.setDepth(Integer.parseInt(req.getParameter("depth")));
 			}
+			dto.setListType(type);
+			PageDTO pd = new PageDTO(BoardDAO.totalCount(dto), Integer.parseInt(req.getParameter("page")), 10);
+			pInfo = om.writeValueAsString(pd);
+			list = BoardDAO.getList(dto, pd);
 
 			if(list.size() == 0 || list.isEmpty()) {
 				r.put("msg", "fail");
@@ -110,6 +123,13 @@ public class MainController extends HttpServlet {
 			}
 
 			pwr.println(r);
+		} else if(path.equals("/getBoard.do")) {
+			BoardDTO dto = new BoardDTO();
+			dto.setBd_seq(Integer.parseInt(req.getParameter("bd_seq")));
+			BoardDTO board = BoardDAO.getBoard(dto, "nm");
+			System.out.println(board);
+			req.setAttribute("dto", board);
+			req.getRequestDispatcher("getBoard.jsp").forward(req, res);
 		} else if(path.equals("/boardTest.do")) {
 			int resa = 0;
 			for(int i=0;i<1000;i++) {

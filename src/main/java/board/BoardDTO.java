@@ -21,4 +21,5 @@ public class BoardDTO extends CommonDTO {
 	private Date bd_del_date;
 
 	private String ct_name;
+	private int depth;
 }

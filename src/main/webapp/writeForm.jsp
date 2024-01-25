@@ -341,7 +341,7 @@
 					// console.log(res)
 					if(res.msg === 'success') {
 						alert("게시글이 등록되었습니다.")
-						location.href = "list.do?depth="+ obj['depth_2'] +"&ct_seq=" + obj['ct_seq'] + "&mb_seq=" + obj['mb_seq'];
+						location.href = "list.do?list_type=my";
 					} else {
 
 					}
