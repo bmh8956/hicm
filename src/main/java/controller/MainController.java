@@ -134,8 +134,8 @@ public class MainController extends HttpServlet {
 			int resa = 0;
 			for(int i=0;i<1000;i++) {
 				BoardDTO dto = new BoardDTO();
-				dto.setCt_seq(24);
-				dto.setMb_seq(21);
+				dto.setCt_seq(109);
+				dto.setMb_seq(42);
 				dto.setBd_type("user");
 				dto.setBd_title("test" + i);
 				dto.setBd_content("content" + i);

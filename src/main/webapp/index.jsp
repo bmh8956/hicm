@@ -6,6 +6,7 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="com.fasterxml.jackson.databind.ObjectMapper" %>
 <%@ page import="com.fasterxml.jackson.core.type.TypeReference" %>
+<%@ page import="java.util.HashMap" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -124,19 +125,22 @@
                                         List<BoardDTO> bd_list = BoardDAO.main_list(board);
 										for(BoardDTO bd : bd_list) {
                                             String img = bd.getBd_img();
-                                            ObjectMapper om = new ObjectMapper();
-                                            TypeReference<Map<String, Object>> tr = new TypeReference<Map<String, Object>>(){};
-                                            Map<String, Object> map = om.readValue(img, tr);
+                                            Map<String, Object> map = new HashMap<>();
+											if(img != null) {
+                                                ObjectMapper om = new ObjectMapper();
+                                                TypeReference<Map<String, Object>> tr = new TypeReference<Map<String, Object>>() {
+                                                };
+                                                map = om.readValue(img, tr);
+                                            }
                                     %>
                                     <div class="col-xl-3 col-lg-4 col-md-4 col-12 main_list">
                                         <div class="card card-small card-post h-100">
-                                            <div class="card-post__image"
-                                                 style="background-image: url('<%=map.get("file_path")%>');"></div>
+                                            <div class="card-post__image" style="background-image: url('<%=(!map.isEmpty())? map.get("file_path") : "static/user/images/noimg.png" %>');"></div>
                                             <div class="card-body">
                                                 <h5 class="card-title">
                                                     <a class="text-fiord-blue" href="getBoard.do?bd_seq=<%=bd.getBd_seq()%>"><%=bd.getBd_title()%></a>
                                                 </h5>
-                                                <p class="card-text"><%=bd.getBd_content()%>>.</p>
+                                                <p class="card-text"><%=bd.getBd_content()%></p>
                                             </div>
                                             <div class="card-footer text-muted border-top py-3">
                                                 <span class="d-inline-block">By
