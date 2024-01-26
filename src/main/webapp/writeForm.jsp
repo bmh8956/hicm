@@ -193,7 +193,7 @@
 										<div class="col-lg-6 col-12">
 											<div class="form-group">
 												<label>이미지<span>*</span></label>
-												<input name="file_name" type="text" id="file_name" placeholder="" readonly onclick="document.getElementById('img').click();">
+												<input name="file_name" type="text" id="file_name" placeholder="" readonly onclick="document.getElementById('img').click();" required>
 												<input type="file" style="display: none" name="img" id="img" accept="image/*">
 												<input type="text" style="display: none" name="bd_img" id="bd_img">
 											</div>
@@ -326,6 +326,9 @@
 		}
 		fmd.set("ct_seq", obj['depth_2']);
 		console.log(obj)
+		if(obj['bd_img'] == '') {
+			document.getElementById("file_name").focus();
+		}
 
 		$.ajax({
 		        type: "post",
